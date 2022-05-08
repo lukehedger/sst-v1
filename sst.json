@@ -1,0 +1,5 @@
+{
+  "name": "sst-v1",
+  "region": "eu-west-2",
+  "main": "stacks/index.ts"
+}
