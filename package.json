@@ -3,13 +3,13 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "sst start --outputs-file .outputs/cdk.json",
     "build": "sst build",
+    "console": "sst console",
     "deploy": "sst deploy --outputs-file .outputs/cdk.json",
     "remove": "sst remove",
-    "console": "sst console",
-    "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "start": "sst start --outputs-file .outputs/cdk.json",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@serverless-stack/cli": "1.0.2",
