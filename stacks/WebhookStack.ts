@@ -4,6 +4,7 @@ import {
   EventBusRuleProps,
   StackContext,
 } from "@serverless-stack/resources";
+import { RemovalPolicy } from "aws-cdk-lib";
 import { Rule } from "aws-cdk-lib/aws-events";
 import { CloudWatchLogGroup } from "aws-cdk-lib/aws-events-targets";
 import { LogGroup } from "aws-cdk-lib/aws-logs";
@@ -11,6 +12,7 @@ import { LogGroup } from "aws-cdk-lib/aws-logs";
 export function WebhookStack({ stack }: StackContext) {
   const logGroup = new LogGroup(this, "WebhookLogGroup", {
     logGroupName: "/app/webhook/events",
+    removalPolicy: RemovalPolicy.DESTROY,
   });
 
   const webhookBus = new EventBus(stack, "WebhookBus");
