@@ -1,21 +1,44 @@
-import { StackContext, Api } from "@serverless-stack/resources";
+import {
+  Api,
+  EventBus,
+  EventBusRuleProps,
+  StackContext,
+} from "@serverless-stack/resources";
+import { Rule } from "aws-cdk-lib/aws-events";
+import { CloudWatchLogGroup } from "aws-cdk-lib/aws-events-targets";
+import { LogGroup } from "aws-cdk-lib/aws-logs";
 
 export function WebhookStack({ stack }: StackContext) {
+  const logGroup = new LogGroup(this, "WebhookLogGroup", {
+    logGroupName: "/app/webhook/events",
+  });
+
+  const webhookBus = new EventBus(stack, "WebhookBus");
+
+  new Rule(this, "WebhookBusLogGroupRule", {
+    eventBus: webhookBus.cdk.eventBus,
+    eventPattern: {
+      detailType: ["MessageReceived"],
+    },
+    ruleName: "WebhookBusLogGroupRule",
+    targets: [new CloudWatchLogGroup(logGroup)],
+  });
+
   const webhookApi = new Api(stack, "WebhookApi", {
     routes: {
-      "GET /": "lambda.handler",
+      "POST /": {
+        function: {
+          handler: "ingest-webhook.handler",
+          functionName: "ingest-webhook",
+          environment: { EVENT_BUS_NAME: webhookBus.eventBusName },
+          permissions: [webhookBus],
+        },
+      },
     },
   });
 
   stack.addOutputs({
     webhookApiUrl: webhookApi.url,
+    webhookEventsLogGroupName: logGroup.logGroupName,
   });
-
-  // TODO: Put Event from AWS Lambda - sdk v3
-
-  // TODO: EventBridge bus event stream - CW log group target (optional via stack props) and tail logs (use Cfn outputs to get group ID, write node script to grab ID and run AWS CLI command)
-
-  // TODO: Lambda to DynamoDB
-
-  // TODO: Stack tests
 }

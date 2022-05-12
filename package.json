@@ -3,23 +3,24 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "sst start",
+    "start": "sst start --outputs-file .outputs/cdk.json",
     "build": "sst build",
-    "deploy": "sst deploy",
+    "deploy": "sst deploy --outputs-file .outputs/cdk.json",
     "remove": "sst remove",
     "console": "sst console",
     "typecheck": "tsc --noEmit",
     "test": "vitest run"
   },
   "devDependencies": {
-    "@serverless-stack/cli": "^1.0.2",
-    "@serverless-stack/resources": "^1.0.2",
-    "@types/aws-lambda": "^8.10.95",
-    "typescript": "^4.6.4",
-    "@tsconfig/node14": "^1.0.1",
-    "vitest": "^0.10.2"
+    "@serverless-stack/cli": "1.0.2",
+    "@serverless-stack/resources": "1.0.2",
+    "@tsconfig/node14": "1.0.1",
+    "@types/aws-lambda": "8.10.95",
+    "aws-cdk-lib": "2.20.0",
+    "typescript": "4.6.4",
+    "vitest": "0.10.2"
   },
   "dependencies": {
-    "aws-sdk": "^2.1128.0"
+    "@aws-sdk/client-eventbridge": "3.88.0"
   }
 }
