@@ -33,7 +33,6 @@ export function WebhookStack({ stack }: StackContext) {
           handler: "ingest-webhook.handler",
           functionName: "ingest-webhook",
           environment: { EVENT_BUS_NAME: webhookBus.eventBusName },
-          permissions: [webhookBus],
         },
       },
     },
